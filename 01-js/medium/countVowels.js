@@ -7,6 +7,14 @@
 
 function countVowels(str) {
     // Your code here
+    let cnt=str.length
+    let pattern=/[aeiou]/gi
+    let sol=str.match(pattern)
+    if (sol==null) {
+      return 0
+    }
+    return sol.length
+
 }
 
 module.exports = countVowels;

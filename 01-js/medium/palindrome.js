@@ -4,7 +4,20 @@
 */
 
 function isPalindrome(str) {
-  return true;
+  let data=str.toLowerCase().split(" ")
+  let result=[]
+  for (let i=0;i<data.length;i++){
+    let word=data[i]
+    let s=""
+    for (let j=0;j<word.length;j++){
+      if(word[j]>='a' && word[j]<='z'){
+        s+=word[j]
+      }
+    }
+    result.push(s)
+  }
+  let val=result.join("")
+  let lav=val.split("").reverse().join("")
+  return val==lav
 }
-
 module.exports = isPalindrome;
