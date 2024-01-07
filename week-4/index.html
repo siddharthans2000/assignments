@@ -28,6 +28,43 @@
       const added = [];
       const deleted = [];
       const updated = [];
+
+      //Added Scenerio
+      for(let i=0;i<newTodos.length;i++){
+        const title=newTodos[i]["title"]
+        const id=newTodos[i]["id"]
+        let isExist=false
+        for(let j=0;j<oldTodoState.length;j++){
+          if(oldTodoState[j]["title"]==title){
+            isExist=true;
+          }
+        }
+        if(isExist==false){
+          added.push(newTodos[i]);
+        }
+      }
+
+      //Update Scenerio
+
+      for(let i=0;i<newTodos.length;i++){
+        const title=newTodos[i]["title"]
+        const description=newTodos["description"]
+        const id=newTodos[i]["id"]
+        let isUpdated=false
+        for(let j=0;j<oldTodoState.length;j++){
+          if(title==oldTodoState[j]["title"] && id!=oldTodoState[j]["id"]){
+            if(description!=oldTodoState[j]["description"]){
+              isUpdated=true
+            }
+          }
+        }
+        if(isUpdated){
+          updated.push(newTodos[i]);
+        }
+      }
+
+      // Deleted Scenerio
+            
       // calculate these 3 arrays
       // call addTodo, removeTodo, updateTodo functions on each of the
       // elements

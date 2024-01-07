@@ -40,10 +40,81 @@
   Testing the server - run `npm run test-todoServer` command in terminal
  */
   const express = require('express');
-  const bodyParser = require('body-parser');
+  const fs=require("fs")
   
   const app = express();
   
-  app.use(bodyParser.json());
+  app.use(express.json());
   
+  let contents=[]
+  let id=0
+
+  app.get("/todos",function(req,res){
+    return res.status(200).json(contents)
+  })
+
+  app.get("/todos/:id",function(req,res){
+    let ID=req.params.id;
+    for(let i=0;i<contents.length;i++){
+      if(ID==contents[i]["id"]){
+        return res.json(contents[i]);
+      }
+    }
+    res.status(404).json({"error":"File not found"});
+  })
+
+  app.post("/todos",function(req,res){
+    let data=req.body;
+    id=id+1;
+    let newData={"id":id,"title":data["title"],
+    "completed":data["completed"],"description":data["description"]}
+    contents.push(newData)
+    return res.status(201).json(newData)
+  })
+
+  app.put("/todos/:id",function(req,res){
+    let ID=req.params.id;
+    let data=req.body;
+    for(let i=0;i<contents.length;i++){
+      if(contents[i]["id"]==ID){
+        contents[i]["title"]=data["title"]
+        contents[i]["completed"]=data["completed"];
+        return res.status(200).json({"messaage":"Record Added"})
+      }
+    }
+    return res.status(404).json({"error":"Not Found"})
+  })
+  app.delete("/todos/:id",function(req,res){
+    let ID=req.params.id
+    for(let i=0;i<contents.length;i++){
+      if(ID==contents[i]["id"]){
+        contents=contents.filter(item => item["id"]!=ID)
+        return res.status(200).json({"message":"Record Deleted for "+ ID})
+      }
+    }
+    return res.status(400).json({"error":"Not Found"});
+    
+  })
+  app.all("*",function(req,res){
+    return res.status(400).json({"error":"Route Not defined"})
+  })
+
+
+
+
+// app.listen(3000,function(){
+//   console.log("Listening on port 3000")
+// })
+/**
+  function loadBootUp(){
+    fs.readFile("data.txt","utf-8",function(err,data){
+      contents=data
+    })
+    for(let i=0;i<contents.length;i++){
+      if(id>contents[i]["id"])
+    }  
+  }
+  loadBootUp()
+
+**/
   module.exports = app;
