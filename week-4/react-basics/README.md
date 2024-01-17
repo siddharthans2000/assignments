@@ -1,5 +1,5 @@
 Try to bootstrap a basic React application using vite. 
-Read more about vite here - https://vitejs.dev/
+Read more about vite here - https://vinptejs.dev/
 
 Create the following functionality - 
  - A basic TODO application where there are two input (title and description) boxes and users can add append TODOs to a div

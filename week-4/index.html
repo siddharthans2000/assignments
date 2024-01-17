@@ -7,15 +7,29 @@
     let todoState = [];
     let oldTodoState = [];
 
-    function addTodoToDom() {
-      
+    function addTodoToDom(todo) {
+      const parent=document.getElementById("todos")
+      const child=document.createElement("div")
+      child.setAttribute("id",todo["id"])
+      const grandChild1=document.createElement("div")
+      const grandChild2=document.createElement("div")
+      const grandChild3=document.createElement("div")
+      grandChild1.innerHTML=todo["id"]
+      grandChild2.innerHTML=todo["title"]
+      grandChild3.innerHTML=todo["description"]
+      child.appendChild(grandChild1)
+      child.appendChild(grandChild2)
+      child.appendChild(grandChild3)
+      parent.append(child)
     }
 
     function removeTodoFromDom(todo) {
-      
+      const child=document.getElementById(todo["id"])
+      child.remove()
     }
 
     function updateTodoInDom(oldTodo, newTodo) {
+        const child=document.getElementById(todo["id"]);
         
     }
 
@@ -28,43 +42,56 @@
       const added = [];
       const deleted = [];
       const updated = [];
-
-      //Added Scenerio
+      //added records
       for(let i=0;i<newTodos.length;i++){
-        const title=newTodos[i]["title"]
-        const id=newTodos[i]["id"]
-        let isExist=false
-        for(let j=0;j<oldTodoState.length;j++){
-          if(oldTodoState[j]["title"]==title){
-            isExist=true;
+        const newRecord=newTodos[i];
+        let notExist=true;
+        for(let j=0;j<oldTodoState.length;i++){
+          if(oldTodoState[j]["id"]==newRecord["id"]){
+            notExist=false;
+            break;
           }
         }
-        if(isExist==false){
-          added.push(newTodos[i]);
+        if(notExist){
+          added.push(newRecord);
+          addTodoToDom(newRecord)
         }
       }
 
-      //Update Scenerio
-
+      //updated records
       for(let i=0;i<newTodos.length;i++){
-        const title=newTodos[i]["title"]
-        const description=newTodos["description"]
-        const id=newTodos[i]["id"]
-        let isUpdated=false
+        const newRecord=newTodos[i];
+        let isUpdated=false;
         for(let j=0;j<oldTodoState.length;j++){
-          if(title==oldTodoState[j]["title"] && id!=oldTodoState[j]["id"]){
-            if(description!=oldTodoState[j]["description"]){
-              isUpdated=true
+          if(newRecord["id"]==oldTodoState[j]["id"]){
+            if(newRecord["title"]!=oldTodoState[j]["title"] || newRecord["description"]!=oldTodoState[j]["description"]){
+              isUpdated=true;
+              updateTodoInDom(oldTodoState[j],newRecord)
+              break;
             }
           }
         }
         if(isUpdated){
-          updated.push(newTodos[i]);
+          updated.push(newRecord);
         }
       }
 
-      // Deleted Scenerio
-            
+      //deleted records
+      for(let i=0;i<oldTodoState;i++){
+        const oldToDo=oldTodoState[i];
+        let isExist=false;
+        for(let j=0;j<newTodos;j++){
+          if(newTodos[i]["id"]==oldToDo["id"]){
+            isExist=true;
+            break;
+          }
+        }
+        if(isExist==false){
+          deleted.push(oldToDo);
+          removeTodoFromDom(oldToDo)
+        }
+      }
+
       // calculate these 3 arrays
       // call addTodo, removeTodo, updateTodo functions on each of the
       // elements
